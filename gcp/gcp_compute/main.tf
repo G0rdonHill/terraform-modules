@@ -37,7 +37,7 @@ resource "google_compute_instance" "vm" {
   # }
   network_interface {
     # A default network is created for all GCP projects
-    network       = google_compute_network.vpc_network.self_link
+    network = google_compute_network.vpc_network.self_link
     access_config {
     }
   }
@@ -63,24 +63,24 @@ resource "google_compute_firewall" "icmp" {
 resource "google_compute_firewall" "ssh" {
   name    = "${var.prefix}-ssh"
   network = google_compute_network.vpc_network.name
-  allow{
+  allow {
     protocol = "tcp"
-    ports = ["22"]
+    ports    = ["22"]
   }
 }
 resource "google_compute_firewall" "allow-internal" {
   name    = "${var.prefix}-internal"
   network = google_compute_network.vpc_network.name
-  allow{
-    protocol="tcp"
-    ports = ["0-65535"]
+  allow {
+    protocol = "tcp"
+    ports    = ["0-65535"]
   }
-  allow{
-    protocol="tcp"
-    ports = ["0-65535"]
+  allow {
+    protocol = "tcp"
+    ports    = ["0-65535"]
   }
-  allow{
-    protocol="icmp"
+  allow {
+    protocol = "icmp"
   }
-  source_ranges=["10.128.0.0/9"]
+  source_ranges = ["10.128.0.0/9"]
 }
