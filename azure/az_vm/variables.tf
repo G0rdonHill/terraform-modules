@@ -32,3 +32,8 @@ variable "default_tags" {
   type        = map(any)
   description = "Default tags from root terraform compositon"
 }
+
+variable "public_access" {
+  type = bool
+  description = "Enable or disable public access to the VM via SSH"
+}

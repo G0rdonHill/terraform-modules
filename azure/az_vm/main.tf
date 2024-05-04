@@ -6,6 +6,16 @@ resource "azurerm_virtual_network" "main" {
   tags                = var.default_tags
 }
 
+resource "azurerm_public_ip" "pubip" {
+  for_each = var.public_access ? { "instance" = true } : {}
+  name                = "${var.naming_convention}-pip"
+  resource_group_name = data.azurerm_resource_group.main.name
+  location            = data.azurerm_resource_group.main.location
+  allocation_method   = "Dynamic"
+
+  tags = var.default_tags
+}
+
 resource "azurerm_subnet" "internal" {
   name                 = "${var.naming_convention}-subnet-internal"
   resource_group_name  = data.azurerm_resource_group.main.name
@@ -18,9 +28,10 @@ resource "azurerm_network_interface" "main" {
   location            = data.azurerm_resource_group.main.location
   resource_group_name = data.azurerm_resource_group.main.name
   ip_configuration {
-    name                          = "configuration1"
+    name                          = "internalconfig1"
     subnet_id                     = azurerm_subnet.internal.id
     private_ip_address_allocation = "Dynamic"
+    public_ip_address_id = var.public_access ? azurerm_public_ip.pubip["instance"].id : null
   }
   tags = var.default_tags
 }
