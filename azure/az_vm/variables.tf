@@ -34,6 +34,6 @@ variable "default_tags" {
 }
 
 variable "public_access" {
-  type = bool
+  type        = bool
   description = "Enable or disable public access to the VM via SSH"
 }
